@@ -4,7 +4,7 @@ The Movie Recommendation System is a software application designed to help users
 The project utilizes techniques such as Content-Based Filtering, Collaborative Filtering, and Machine Learning to analyze user preferences, movie ratings, genres, cast, directors, and viewing patterns. Based on this analysis, the system suggests movies that are most likely to interest the user. The recommendation process improves user experience by reducing search time and helping users discover new and relevant content.
 
 
-#Software Requirements: 
+# Software Requirements: 
 
 Frontend: HTML, CSS, JavaScript  
 
@@ -52,7 +52,7 @@ Matplotlib
 10. Navigation
 
 
-#Flow chart of methodology: 
+# Flow chart of methodology: 
 
 Start 
 
