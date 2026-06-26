@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>R Bomma - Movies</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+            color: white;
+        }
+
+        header {
+            background: #e50914;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: yellow;
+        }
+
+        .container {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .search-box {
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .search-box input#searchBox {
+            width: 100%;
+            max-width: 340px;
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.22);
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.3);
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        .search-box input#searchBox::placeholder {
+            color: #ffd700;
+            opacity: 0.9;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .search-box select {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.25);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-box select:hover,
+        .search-box select:focus {
+            border-color: #ffd700;
+            color: #fff;
+        }
+
+        .search-box select option {
+            background: #1f1f1f;
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .movie-card {
+            cursor: pointer;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .card button {
+            cursor: pointer;
+        }
+
+        input, select, button {
+            padding: 13px;
+            margin: 8px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+        }
+
+        input, select {
+            width: 220px;
+        }
+
+        button {
+            background: #e50914;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #b20710;
+            transform: scale(1.05);
+        }
+
+        .reset-btn {
+            background: #444;
+        }
+
+        .movies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: #222;
+            padding: 15px;
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
+        }
+
+        .card img {
+            width: 100%;
+            height: 310px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .genre {
+            background: #e50914;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            text-transform: capitalize;
+        }
+
+        .rating {
+            color: gold;
+            font-size: 18px;
+        }
+
+        section {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .watchlist-box {
+            background: #222;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        #watchlist li {
+            list-style: none;
+            padding: 10px;
+            margin: 8px;
+            background: #333;
+            border-radius: 8px;
+        }
+
+        footer {
+            background: #000;
+            text-align: center;
+            padding: 18px;
+            color: #aaa;
+        }
+
+        @media(max-width: 600px) {
+            header {
+                flex-direction: column;
+            }
+
+            nav {
+                margin-top: 10px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 8px;
+            }
+
+            input, select {
+                width: 90%;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #e50914, #ffb347);
+            border-radius: 999px;
+            border: 3px solid rgba(255,255,255,0.1);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #ff3d71, #ffd54f);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>🎬 R Bomma</h1>
+    <nav>
+        <a href="demo4.html">Home</a>
+        <a href="demo4-page2.html">Movies</a>
+        <a href="demo4-genre.html">Genres</a>
+        <a href="#watch">Watchlist</a>
+        <a href="demo4-contact.html">Contact</a>
+    </nav>
+</header>
+
+<div class="container" id="movies">
+    <h2>Find Telugu Movies</h2>
+
+    <div class="search-box">
+        <input type="text" id="searchBox" placeholder="Search movie">
+
+        <select id="Genre">
+            <option value="All">All Genres</option>
+            <option value="Action">Action</option>
+            <option value="Romance">Romance</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Drama">Drama</option>
+            <option value="Thriller">Thriller</option>
+        </select>
+
+        <button onclick="recommendMovies()">Recommend</button>
+        <button class="reset-btn" onclick="resetMovies()">Reset</button>
+    </div>
+
+    <h3 id="movieCount"></h3>
+
+    <div class="movies" id="movieList"></div>
+</div>
+
+<section id="genres">
+    <h2>Movie Genres</h2>
+    <button onclick="filterGenre('Action')">Action</button>
+    <button onclick="filterGenre('Romance')">Romance</button>
+    <button onclick="filterGenre('Comedy')">Comedy</button>
+    <button onclick="filterGenre('Drama')">Drama</button>
+    <button onclick="filterGenre('Thriller')">Thriller</button>
+</section>
+
+<section id="watch">
+    <h2>My Watchlist</h2>
+    <div class="watchlist-box">
+        <ul id="watchlist"></ul>
+    </div>
+</section>
+
+<section id="contact">
+    <h2>Contact Us</h2>
+    <p>Email: rbomma@gmail.com</p>
+    <p>Phone: +91 9876543210</p>
+    <p>Location: Andhra Pradesh, India</p>
+</section>
+
+<footer>
+    <p>© 2026 R Bomma | Telugu Movie Recommendation System</p>
+</footer>
+
+<script>
+const movies = [
+    {name:"RRR", genre:"action", rating:"★★★★★", image:"rrr.jpg"},
+    {name:"Baahubali The Beginning", genre:"action", rating:"★★★★★", image:"bb1.jpg"},
+    {name:"Baahubali The Conclusion", genre:"action", rating:"★★★★★", image:"bb2.jpg"},
+    {name:"Pushpa", genre:"action", rating:"★★★★☆", image:"Pushpa.jpg"},
+    {name:"Arjun Reddy", genre:"drama", rating:"★★★★☆", image:"Arjun Reddy.jpg"},
+    {name:"Jersey", genre:"drama", rating:"★★★★★", image:"Jersey.jpg"},
+    {name:"Mahanati", genre:"drama", rating:"★★★★★", image:"Mahanati.jpg"},
+    {name:"Sita Ramam", genre:"romance", rating:"★★★★★", image:"Sita Ramam.jpg"},
+    {name:"Geetha Govindam", genre:"romance", rating:"★★★★☆", image:"Geetha Govindam.jpg"},
+    {name:"Arya", genre:"romance", rating:"★★★★☆", image:"Arya.jpg"},
+    {name:"Bommarillu", genre:"romance", rating:"★★★★★", image:"Bommarillu.jpg"},
+    {name:"Jathi Ratnalu", genre:"comedy", rating:"★★★★☆", image:"Jathi Ratnalu.jpg"},
+    {name:"DJ Tillu", genre:"comedy", rating:"★★★★☆", image:"DJ Tillu.jpg"},
+    {name:"Agent Sai Srinivasa Athreya", genre:"thriller", rating:"★★★★☆", image:"Agent Sai Srinivasa Athreya.jpg"},
+    {name:"Goodachari", genre:"thriller", rating:"★★★★☆", image:"Goodachari.jpg"},
+    {name:"Eega", genre:"action", rating:"★★★★☆", image:"Eega.jpg"},
+    {name:"Magadheera", genre:"action", rating:"★★★★★", image:"Magadheera.jpg"},
+    {name:"Ala Vaikunthapurramuloo", genre:"comedy", rating:"★★★★☆", image:"Ala Vaikunthapurramuloo.jpg"},
+    {name:"Rangasthalam", genre:"drama", rating:"★★★★★", image:"Rangasthalam.jpg"},
+    {name:"Karthikeya 2", genre:"thriller", rating:"★★★★☆", image:"Karthikeya 2.jpg"}
+];
+
+function recommendMovies() {
+    const searchValue = document.getElementById("searchBox").value.toLowerCase();
+    const selectedGenre = document.getElementById("Genre").value.toLowerCase();
+    const movieList = document.getElementById("movieList");
+    const movieCount = document.getElementById("movieCount");
+
+    movieList.innerHTML = "";
+
+    const filteredMovies = movies.filter(movie => {
+        return movie.name.toLowerCase().includes(searchValue) &&
+            (selectedGenre === "all" || movie.genre === selectedGenre);
+    });
+
+    movieCount.innerHTML = "Showing " + filteredMovies.length + " movie(s)";
+
+    if (filteredMovies.length === 0) {
+        movieList.innerHTML = "<h3>No movies found</h3>";
+        return;
+    }
+
+    filteredMovies.forEach(movie => {
+        movieList.innerHTML += `
+            <div class="card movie-card" onclick="openMovieReview('${movie.name}')">
+                <img src="${movie.image}" alt="${movie.name}">
+                <h3>${movie.name}</h3>
+                <p class="genre">${movie.genre}</p>
+                <p class="rating">${movie.rating}</p>
+                <button type="button" onclick="event.stopPropagation(); addToWatchlist('${movie.name}')">Add to Watchlist</button>
+            </div>
+        `;
+    });
+}
+
+function openMovieReview(movieName) {
+    window.location.href = 'movie-detail.html?movie=' + encodeURIComponent(movieName);
+}
+
+function resetMovies() {
+    document.getElementById("searchBox").value = "";
+    document.getElementById("Genre").value = "All";
+    recommendMovies();
+}
+
+function filterGenre(genre) {
+    document.getElementById("Genre").value = genre;
+    recommendMovies();
+    document.getElementById("movies").scrollIntoView();
+}
+
+function addToWatchlist(movieName) {
+    const watchlist = document.getElementById("watchlist");
+    const items = watchlist.getElementsByTagName("li");
+
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].innerText.includes(movieName)) {
+            alert(movieName + " is already in Watchlist");
+            return;
+        }
+    }
+
+    const item = document.createElement("li");
+    item.innerHTML = movieName + ' <button type="button" onclick="this.parentElement.remove()">Remove</button>';
+    watchlist.appendChild(item);
+    alert(movieName + " added to Watchlist");
+}
+
+recommendMovies();
+</script>
+</body>
+</html>

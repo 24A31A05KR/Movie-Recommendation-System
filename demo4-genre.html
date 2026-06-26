@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>R Bomma - Genres</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+            color: white;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #e50914;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: yellow;
+        }
+
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .button-row button {
+            padding: 14px 22px;
+            border: none;
+            border-radius: 999px;
+            background: #222;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .button-row button:hover {
+            background: #e50914;
+            transform: translateY(-2px);
+        }
+
+        .movies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #222;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.45);
+        }
+
+        .card img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-body {
+            padding: 18px;
+            text-align: left;
+        }
+
+        .card-body h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .genre-tag {
+            display: inline-block;
+            background: #e50914;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 999px;
+            text-transform: capitalize;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            color: gold;
+            font-size: 16px;
+            margin-top: 6px;
+        }
+
+        footer {
+            background: #000;
+            padding: 18px;
+            text-align: center;
+            color: #aaa;
+        }
+
+        @media(max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            nav a {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>🎬 R Bomma</h1>
+    <nav>
+        <a href="demo4.html">Home</a>
+        <a href="demo4-page2.html">Movies</a>
+        <a href="demo4-genre.html">Genres</a>
+        <a href="demo4-contact.html">Contact</a>
+    </nav>
+</header>
+
+<div class="content">
+    <h2>Browse by Genre</h2>
+    <p>Click a genre to view matching Telugu movies.</p>
+
+    <div class="button-row">
+        <button onclick="filterGenre('all')">All</button>
+        <button onclick="filterGenre('action')">Action</button>
+        <button onclick="filterGenre('romance')">Romance</button>
+        <button onclick="filterGenre('comedy')">Comedy</button>
+        <button onclick="filterGenre('drama')">Drama</button>
+        <button onclick="filterGenre('thriller')">Thriller</button>
+    </div>
+
+    <div class="movies" id="movieList"></div>
+</div>
+
+<footer>
+    <p>© 2026 R Bomma | Telugu Movie Recommendation System</p>
+</footer>
+
+<script>
+const movies = [
+    {name:"RRR", genre:"action", rating:"★★★★★", image:"rrr.jpg"},
+    {name:"Baahubali The Beginning", genre:"action", rating:"★★★★★", image:"bb1.jpg"},
+    {name:"Baahubali The Conclusion", genre:"action", rating:"★★★★★", image:"bb2.jpg"},
+    {name:"Pushpa", genre:"action", rating:"★★★★☆", image:"Pushpa.jpg"},
+    {name:"Arjun Reddy", genre:"drama", rating:"★★★★☆", image:"Arjun Reddy.jpg"},
+    {name:"Jersey", genre:"drama", rating:"★★★★★", image:"Jersey.jpg"},
+    {name:"Mahanati", genre:"drama", rating:"★★★★★", image:"Mahanati.jpg"},
+    {name:"Sita Ramam", genre:"romance", rating:"★★★★★", image:"Sita Ramam.jpg"},
+    {name:"Geetha Govindam", genre:"romance", rating:"★★★★☆", image:"Geetha Govindam.jpg"},
+    {name:"Arya", genre:"romance", rating:"★★★★☆", image:"Arya.jpg"},
+    {name:"Bommarillu", genre:"romance", rating:"★★★★★", image:"Bommarillu.jpg"},
+    {name:"Jathi Ratnalu", genre:"comedy", rating:"★★★★☆", image:"Jathi Ratnalu.jpg"},
+    {name:"DJ Tillu", genre:"comedy", rating:"★★★★☆", image:"DJ Tillu.jpg"},
+    {name:"Agent Sai Srinivasa Athreya", genre:"thriller", rating:"★★★★☆", image:"Agent Sai Srinivasa Athreya.jpg"},
+    {name:"Goodachari", genre:"thriller", rating:"★★★★☆", image:"Goodachari.jpg"},
+    {name:"Eega", genre:"action", rating:"★★★★☆", image:"Eega.jpg"},
+    {name:"Magadheera", genre:"action", rating:"★★★★★", image:"Magadheera.jpg"},
+    {name:"Ala Vaikunthapurramuloo", genre:"comedy", rating:"★★★★☆", image:"Ala Vaikunthapurramuloo.jpg"},
+    {name:"Rangasthalam", genre:"drama", rating:"★★★★★", image:"Rangasthalam.jpg"},
+    {name:"Karthikeya 2", genre:"thriller", rating:"★★★★☆", image:"Karthikeya 2.jpg"}
+];
+
+function filterGenre(genre) {
+    const movieList = document.getElementById('movieList');
+    movieList.innerHTML = '';
+    const filtered = genre === 'all' ? movies : movies.filter(movie => movie.genre === genre);
+
+    if (!filtered.length) {
+        movieList.innerHTML = '<h3>No movies found</h3>';
+        return;
+    }
+
+    filtered.forEach(movie => {
+        movieList.innerHTML += `
+            <div class="card" onclick="openMovieReview('${movie.name}')">
+                <img src="${movie.image}" alt="${movie.name}">
+                <div class="card-body">
+                    <div class="genre-tag">${movie.genre}</div>
+                    <h3>${movie.name}</h3>
+                    <div class="rating">${movie.rating}</div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function openMovieReview(movieName) {
+    window.location.href = 'movie-detail.html?movie=' + encodeURIComponent(movieName);
+}
+
+filterGenre('all');
+</script>
+</body>
+</html>
